@@ -5,7 +5,7 @@
 #include <Adafruit_BMP280.h>
 #include <DHT.h>
 #include <LiquidCrystal.h>
-//#include <Servo.h>
+#include <Servo.h>
 
 
 #define DHTPIN 6 //Defiene el pin al que se conectará el sensor
@@ -30,7 +30,7 @@ void setup() {
   Serial.begin(9600);
   dht.begin();
   lcd.begin(16,2);
-  //servo1.attach(9);
+  servo1.attach(9);
   pinMode(2,OUTPUT);
   
    if (!bmp.begin()) {
@@ -70,13 +70,13 @@ void loop() {
   delay(8000);
   
   if(temp_dht > 20 && hum_dht < 70 && pres_bmp > 27500 ){
-    //   digitalWrite(7,HIGH);
-  //    servo1.write(90);
+       digitalWrite(7,HIGH);
+      servo1.write(90);
     }
        else{
-         //   digitalWrite(7,LOW);
-      //      servo1.write(0);
-        }
+           digitalWrite(7,LOW);
+           servo1.write(0);
+       }
   
     
 }
