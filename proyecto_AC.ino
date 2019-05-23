@@ -69,7 +69,7 @@ void loop() {
   
   delay(8000);
   
-  if(temp_dht > 20 && hum_dht < 70 && pres_bmp > 27500 ){
+  if(temp_dht > 22 && hum_dht < 40 && pres_bmp > 28000 ){
        digitalWrite(7,HIGH);
       servo1.write(90);
     }
