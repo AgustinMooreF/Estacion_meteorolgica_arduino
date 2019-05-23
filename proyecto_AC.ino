@@ -5,7 +5,7 @@
 #include <Adafruit_BMP280.h>
 #include <DHT.h>
 #include <LiquidCrystal.h>
-//#include <Servo.h>
+#include <Servo.h>
 #include <SoftwareSerial.h>    
 
 
