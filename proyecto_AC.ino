@@ -13,7 +13,7 @@
 #define DHTPIN 6 //Defiene el pin al que se conectará el sensor
 #define DHTTYPE DHT11 //Seleciona el tipo de sensor
 byte pinB = 8;
-
+char dato = 'c';
 int RS = 12;
 int E = 13;
 int d4 = 5;
@@ -34,7 +34,7 @@ void setup() {
   dht.begin();
   lcd.begin(16,2);
   servo1.attach(9);
-  pinMode(2,OUTPUT);
+  pinMode(7,OUTPUT);
   pinMode(pinB, OUTPUT);
   
    if (!bmp.begin()) {
@@ -47,17 +47,27 @@ void setup() {
 
 void loop() {
 
+  if (Serial.available())
+  {
+    dato=Serial.read();
+    Serial.print("Dato recibido: ");
+    Serial.println(dato);
+    
+      if(dato == 'f' ){  
+           Serial.print("teminando aviso de lluvia");
+       }
+  }
   
   int hum_dht = dht.readHumidity();
   int temp_dht = dht.readTemperature();
   int pres_bmp = bmp.readPressure();
+
 
   if (isnan(hum_dht)||isnan(temp_dht))
    {
         Serial.print("error en el sensor DHT11");
         return;
     }
-  Serial.print(temp_dht);
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("tem:");
@@ -71,32 +81,23 @@ void loop() {
   lcd.print("presion:");
   lcd.print(pres_bmp);
   lcd.print("Hpa");
-  
   delay(8000);
   
- if (Serial.available())
-  {
-    char dato=Serial.read();
-    Serial.print("Dato recibido: ");
-    Serial.println(dato);
-    
-      if(dato == 'f' ){  
-           Serial.print("finish it");
-       }
-  }
-  
  
-  if(temp_dht > 22 && hum_dht < 40 && pres_bmp > 28000 ){
-        digitalWrite(7,HIGH); 
-        servo1.write(90);
-        tone(pinB, 440, 300);
-        delay(200);
-        
-    }
-       else{
-          digitalWrite(7,LOW);
-          servo1.write(0);
-       }
   
-    
+ if (dato != 'f'){
+  
+     if(temp_dht > 22 && hum_dht < 40 && pres_bmp > 28000 ){
+          digitalWrite(7,HIGH); 
+          servo1.write(90);
+          tone(pinB, 440, 300);  
+              }
+   
+      }
+       else
+          {
+            digitalWrite(7,LOW);
+            servo1.write(0);     
+                 }
+         
 }
