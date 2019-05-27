@@ -12,10 +12,10 @@
 
 #define DHTPIN 6 //Defiene el pin al que se conectará el sensor
 #define DHTTYPE DHT11 //Seleciona el tipo de sensor
-
+byte pinB = 8;
 
 int RS = 12;
-int E = 11;
+int E = 13;
 int d4 = 5;
 int d5 = 4;
 int d6 = 3;
@@ -35,6 +35,7 @@ void setup() {
   lcd.begin(16,2);
   servo1.attach(9);
   pinMode(2,OUTPUT);
+  pinMode(pinB, OUTPUT);
   
    if (!bmp.begin()) {
     Serial.println(F("no encontro el bmp280"));
@@ -72,20 +73,25 @@ void loop() {
   lcd.print("Hpa");
   
   delay(8000);
-
-   if(BT.available())    
+  
+ if (Serial.available())
   {
-    Serial.write(BT.read());
+    char dato=Serial.read();
+    Serial.print("Dato recibido: ");
+    Serial.println(dato);
+    
+      if(dato == 'f' ){  
+           Serial.print("finish it");
+       }
   }
- 
-  if(Serial.available())  
-  {
-     BT.write(Serial.read());
-  }  
+  
  
   if(temp_dht > 22 && hum_dht < 40 && pres_bmp > 28000 ){
-       digitalWrite(7,HIGH);
+        digitalWrite(7,HIGH); 
         servo1.write(90);
+        tone(pinB, 440, 300);
+        delay(200);
+        
     }
        else{
           digitalWrite(7,LOW);
